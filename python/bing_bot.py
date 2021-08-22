@@ -33,17 +33,31 @@ class BingBot:
     def __init__(self, mobile_mode=False, custom_conf=None):        
         self.mobile_mode = mobile_mode
         self.custom_conf = custom_conf
+        self.pyDir = os.path.dirname(__file__)
         self.readConfig()
         self.readUserAgent()
         self.readCookie()
         self.setupLogger()
+
+    def printBanner(self):
+        self.logger.info("===============================================")
+        self.logger.info("    ____  _____   ________   ____  ____  ______")
+        self.logger.info("   / __ )/  _/ | / / ____/  / __ )/ __ \/_  __/")
+        self.logger.info("  / __  |/ //  |/ / / __   / __  / / / / / /")
+        self.logger.info(" / /_/ // // /|  / /_/ /  / /_/ / /_/ / / /")
+        self.logger.info("/_____/___/_/ |_/\____/  /_____/\____/ /_/")
+        self.logger.info("The Bot that Bing's, so you don't have to...")
+        self.logger.info("===============================================")
+        self.logger.info("Mobile Option: " + str(self.mobile_mode))
+        self.logger.info("Custom Config: " + str(self.custom_conf))
+        self.logger.info("===============================================")
 
     def setupLogger(self):
         self.logger = logging.getLogger('bing_bot')
         self.logger.setLevel(logging.INFO)
         logHandler = handlers.RotatingFileHandler(
             self.log_file,
-            maxBytes=1000,
+            maxBytes=10000,
             backupCount=2
         )
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -54,8 +68,7 @@ class BingBot:
         if self.custom_conf:
             configPath = self.custom_conf
         else:
-            parentDir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-            configPath = os.path.join(parentDir, 'conf', 'default_conf.json')
+            configPath = os.path.join(self.pyDir, '../conf/default_conf.json')
         with open(configPath, 'r') as f:
             configJson = Configuration(json.loads(f.read()))
 
@@ -69,17 +82,15 @@ class BingBot:
         self.random_words_repo = conf.random_words_repo
 
     def readUserAgent(self):
-        parentDir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
         if self.mobile_mode:
-            agentPath = os.path.join(parentDir, 'conf', 'user_agent_mobile.txt')
+            agentPath = os.path.join(self.pyDir, '../conf/user_agent_mobile.txt')
         else:
-            agentPath = os.path.join(parentDir, 'conf', 'user_agent_edge.txt')
+            agentPath = os.path.join(self.pyDir, '../conf/user_agent_edge.txt')
         with open(agentPath, 'r') as file:
             self.agent = file.read().replace('\n','')
 
     def readCookie(self):
-        parentDir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
-        cookiePath = os.path.join(parentDir, 'conf', 'cookie.txt')
+        cookiePath = os.path.join(self.pyDir, '../conf/cookie.txt')
         with open(cookiePath, 'r') as file:
             self.cookie = file.read().replace('\n','')
 
@@ -94,10 +105,7 @@ class BingBot:
         return random.choice(random_value)
 
     def run(self):
-        self.logger.info("BING BOT STARTED")
-        self.logger.info("Mobile Option: " + str(self.mobile_mode))
-        self.logger.info("Custom Config: " + str(self.custom_conf))
-
+        self.printBanner()
         for i in range(random.randint(self.min_searches,self.max_searches)):
             query = self.generateRandomWord()
             cookies = {'required_cookie': self.cookie}
