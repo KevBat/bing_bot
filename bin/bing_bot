@@ -139,16 +139,6 @@ function generate_rand_word {
     echo $rand_word
 }
 
-function generate_rand_word {
-    local rand_words=$(curl -ks $RANDOM_WORDS_REPO | jq -r .[])
-    local ultra_rando=$(($RANDOM + $RANDOM))
-    local rand_word=$(echo "$rand_words" \
-    | tr -dc '[:alnum:]\n\r' \
-    | head -$ultra_rando \
-    | tail -1)
-    echo $rand_word
-}
-
 
 ################################################################################
 # Help / Option parsing
