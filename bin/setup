@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
 
 # Install packages
-sudo apt-get install curl jq unzip tree
+sudo apt-get install curl jq unzip tree python3
 
 # Download and extract the bing_bot project
 wget -O bing_bot.zip https://github.com/tadms/bing_bot/archive/master.zip
 unzip bing_bot.zip
 mv bing_bot-master/ bing_bot/
-chmod -R +x bing_bot/bin/
+chmod -R +x bing_bot/{bin,python}
 rm bing_bot.zip
 
 # Setup logs

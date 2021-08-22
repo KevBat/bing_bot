@@ -61,6 +61,8 @@ Cron/Schedule Setup
 `crontab -e` <br>
 `0 2 * * * sleep $(shuf -i 1-3600 -n 1) && /home/pi/bing_bot/bin/bing_bot` <br>
 `0 12 * * * sleep $(shuf -i 1-3600 -n 1) && /home/pi/bing_bot/bin/bing_bot -m` <br>
+`0 2 * * * sleep $(shuf -i 1-3600 -n 1) && /home/pi/bing_bot/python/bing_bot.py` <br>
+`0 12 * * * sleep $(shuf -i 1-3600 -n 1) && /home/pi/bing_bot/python/bing_bot.py -m` <br>
   * *Note:  The `sleep` command is used to randomize the start time.*
 
 
